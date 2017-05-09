@@ -122,10 +122,14 @@ namespace Leap.Unity {
 
             int extendedCount = 0;
             for (int f = 0; f < 5; f++) {
-              if (hand.Fingers[f].IsExtended) {
-                extendedCount++;
-              }
+                if (!hand.Fingers[f].IsExtended) {
+                                Debug.Log("Thumb is not up");
+                                extendedCount++;
+                }
             }
+                        // if extended count is 0, reference to thumb
+            
+
             fingerState = fingerState && 
                          (extendedCount <= MaximumExtendedCount) && 
                          (extendedCount >= MinimumExtendedCount);

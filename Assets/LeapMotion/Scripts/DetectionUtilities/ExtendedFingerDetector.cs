@@ -108,8 +108,9 @@ namespace Leap.Unity {
     }
   
     IEnumerator extendedFingerWatcher() {
+      Controller leapController = new Controller();
       Hand hand;
-      while(true){
+      while(true){ //start while
         bool fingerState = false;
         if(HandModel != null && HandModel.IsTracked){
           hand = HandModel.GetLeapHand();
@@ -120,20 +121,38 @@ namespace Leap.Unity {
               && matchFingerState(hand.Fingers[3], Ring)
               && matchFingerState(hand.Fingers[4], Pinky);
 
+
+            if (leapController.IsConnected)
+            {
+				Frame frame = leapController.Frame();
+				if(frame.Hands.Count > 0)
+				{
+					Hand firstHand = frame.Hands[0];
+					float strength = firstHand.GrabStrength;
+					if(strength == 0)
+					{
+						Debug.Log("Not gripped");
+					}
+					else{
+						Debug.Log("Gripped");
+					}
+				}
+            }
             int extendedCount = 0;
             for (int f = 0; f < 5; f++) {
-                if (!hand.Fingers[f].IsExtended) {
-                                Debug.Log("Thumb is not up");
-                                extendedCount++;
+                if (hand.Fingers[f].IsExtended) {
+                extendedCount++;
                 }
             }
-                        // if extended count is 0, reference to thumb
-            
+
+            // if extended count is 0, reference to thumb
 
             fingerState = fingerState && 
                          (extendedCount <= MaximumExtendedCount) && 
                          (extendedCount >= MinimumExtendedCount);
             if(HandModel.IsTracked && fingerState){
+			  Debug.Log("Finger state is :" + fingerState);
+			  Debug.Log("Activating");
               Activate();
             } else if(!HandModel.IsTracked || !fingerState) {
               Deactivate();
@@ -143,7 +162,7 @@ namespace Leap.Unity {
           Deactivate();
         }
         yield return new WaitForSeconds(Period);
-      }
+      } //end while
     }
 
     private bool matchFingerState (Finger finger, PointingState requiredState) {

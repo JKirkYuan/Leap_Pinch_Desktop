@@ -138,6 +138,7 @@ namespace Leap.Unity {
 					}
 				}
             }
+
             int extendedCount = 0;
             for (int f = 0; f < 5; f++) {
                 if (hand.Fingers[f].IsExtended) {

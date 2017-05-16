@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System;
 
-namespace Leap.Unity.DetectionExamples {
+namespace Leap.Unity.DetectionExamples
+{
 
-  public class PinchDraw : MonoBehaviour {
+	public class PinchDraw : MonoBehaviour {
 
     [Tooltip("Each pinch detector can draw one line at a time.")]
     [SerializeField]
@@ -47,6 +50,8 @@ namespace Leap.Unity.DetectionExamples {
       }
     }
 
+	public static Stopwatch stopWatch = new Stopwatch();
+
     void OnValidate() {
       _drawRadius = Mathf.Max(0, _drawRadius);
       _drawResolution = Mathf.Clamp(_drawResolution, 3, 24);
@@ -55,7 +60,7 @@ namespace Leap.Unity.DetectionExamples {
 
     void Awake() {
       if (_pinchDetectors.Length == 0) {
-        Debug.LogWarning("No pinch detectors were specified!  PinchDraw can not draw any lines without PinchDetectors.");
+        UnityEngine.Debug.LogWarning("No pinch detectors were specified!  PinchDraw can not draw any lines without PinchDetectors.");
       }
     }
 
@@ -76,7 +81,11 @@ namespace Leap.Unity.DetectionExamples {
         }
 
         if (detector.DidRelease) {
-          drawState.FinishLine();
+		  drawState.FinishLine();
+		  stopWatch.Stop();
+		  TimeSpan ts = stopWatch.Elapsed;
+		  string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+		  UnityEngine.Debug.Log("RunTime " + elapsedTime);
         }
 
         if (detector.IsHolding) {
@@ -112,6 +121,8 @@ namespace Leap.Unity.DetectionExamples {
       }
 
       public GameObject BeginNewLine() {
+	    stopWatch.Reset();
+	    stopWatch.Start();
         _rings = 0;
         _vertices.Clear();
         _tris.Clear();

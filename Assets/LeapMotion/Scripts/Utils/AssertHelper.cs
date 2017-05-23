@@ -1,10 +1,32 @@
-﻿using UnityEngine.Assertions;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 using System.Linq;
 using System.Diagnostics;
 using System.Collections.Generic;
 
 public static class AssertHelper {
+
+  [Conditional("UNITY_EDITOR")]
+  public static void AssertRuntimeOnly(string message = null) {
+    message = message ?? "Assert failed because game was not in Play Mode.";
+    Assert.IsTrue(Application.isPlaying, message);
+  }
+
+  [Conditional("UNITY_EDITOR")]
+  public static void AssertEditorOnly(string message = null) {
+    message = message ?? "Assert failed because game was in Play Mode.";
+    Assert.IsFalse(Application.isPlaying, message);
+  }
 
   [Conditional("UNITY_ASSERTIONS")]
   public static void Implies(bool condition, bool result, string message = "") {

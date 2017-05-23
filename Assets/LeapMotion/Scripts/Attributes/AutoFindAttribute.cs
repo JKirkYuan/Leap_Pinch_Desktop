@@ -1,4 +1,13 @@
-﻿using System;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using System;
 using System.Reflection;
 using System.Collections.Generic;
 #if UNITY_EDITOR
@@ -18,10 +27,10 @@ namespace Leap.Unity.Attributes {
   }
 
   public class AutoFindAttribute : CombinablePropertyAttribute, IPropertyConstrainer {
-    private AutoFindLocations _searchLocations;
+    public readonly AutoFindLocations searchLocations;
 
     public AutoFindAttribute(AutoFindLocations searchLocations = AutoFindLocations.All) {
-      _searchLocations = searchLocations;
+      this.searchLocations = searchLocations;
     }
 
 #if UNITY_EDITOR
@@ -36,7 +45,7 @@ namespace Leap.Unity.Attributes {
     }
 
     private bool search(SerializedProperty property, AutoFindLocations location, Func<Type, UnityEngine.Object> searchDelegate) {
-      if ((_searchLocations & location) != 0) {
+      if ((searchLocations & location) != 0) {
         var value = searchDelegate(fieldInfo.FieldType);
         if (value != null) {
           property.objectReferenceValue = value;

@@ -1,8 +1,11 @@
-﻿/******************************************************************************\
-* Copyright (C) Leap Motion, Inc. 2011-2016.                                   *
-* Leap Motion proprietary. Licensed under Apache 2.0                           *
-* Available at http://www.apache.org/licenses/LICENSE-2.0.html                 *
-\******************************************************************************/
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
 
 using UnityEngine;
 using System.Collections;
@@ -13,6 +16,8 @@ namespace Leap.Unity{
    * Tracks the connection state of the Leap Motion hardware. If the device is unplugged
    * or otherwise not detected, the script fades in a GUITexture object which should communicate
    * the problem to the user.
+   *
+   * @deprecated Use ConnectionMonitor in new code.
    */
   public class DisconnectionNotice : MonoBehaviour {
   
@@ -24,8 +29,6 @@ namespace Leap.Unity{
     public AnimationCurve fade;
     /** A delay before beginning the fade-in effect. */
     public int waitFrames = 10;
-    /** An alternative image to use when the hardware is embedded in a keyboard or laptop. */
-    public Sprite embeddedReplacementImage;
     /** The fully on texture tint color. */
     public Color onColor = Color.white;
   
@@ -46,19 +49,8 @@ namespace Leap.Unity{
     bool IsConnected() {
       return leap_controller_.IsConnected;
     }
-    
-    /** Whether the controller is embedded in a keyboard or laptop.*/
-    bool IsEmbedded() {
-      DeviceList devices = leap_controller_.Devices;
-      if (devices.Count == 0)
-        return false;
-      return devices[0].Type != Device.DeviceType.TYPE_PERIPHERAL;
-    }
-          
+              
     void Update() {
-      if (embeddedReplacementImage != null && IsEmbedded()) {
-        GetComponent<UnityEngine.UI.Image>().sprite = embeddedReplacementImage;
-      }
   
       if (IsConnected())
         frames_disconnected_ = 0;

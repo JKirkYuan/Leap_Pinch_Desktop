@@ -19,4 +19,4 @@ go into Assets > LeapMotion > Scenes > Leap_Pinch_Demo_Desktop <-- Open this Uni
 ```
 
 ### Issues
-Currently Orion is in Beta and does not work with MacOS :frowning:
+Currently Leap Motion Orion is in Beta and does not work with MacOS :frowning:

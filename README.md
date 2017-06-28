@@ -19,4 +19,5 @@ go into Assets > LeapMotion > Scenes > Leap_Pinch_Demo_Desktop <-- Open this Uni
 ```
 
 ### Issues
+Must update everything!! All older modules have been deprecated 
 Currently Leap Motion Orion is in Beta and does not work with MacOS :frowning:
